@@ -60,9 +60,9 @@ export const ALLY_UNITS = [
   },
   {
     id: 'pyromancer',
-    name: 'パイロマンサー',
+    name: 'グリム',
     side: 'ally',
-    description: '炎魔法を操る術士。攻撃力が高く範囲効果もある。',
+    description: '死霊術を操る暗黒魔道士。攻撃力が最高クラスで、遠距離から敵を薙ぎ払う。',
     hp: 70,
     attack: 40,
     defense: 4,
@@ -70,8 +70,7 @@ export const ALLY_UNITS = [
     moveSpeed: 30,
     attackInterval: 2200,
     cost: 140,
-    // TODO: 画像未確定
-    image: null
+    image: 'pyromancer.png'
   },
   {
     id: 'medic',
