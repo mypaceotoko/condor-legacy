@@ -74,9 +74,9 @@ export const ALLY_UNITS = [
   },
   {
     id: 'medic',
-    name: 'メディック',
+    name: 'ケロ',
     side: 'ally',
-    description: '近くの味方を回復する衛生兵。戦闘より支援が専門。',
+    description: '黒マントをまとったカエルの回復魔道士。緑のオーブで味方のHPを癒す。',
     hp: 75,
     attack: 8,
     defense: 8,
@@ -84,10 +84,9 @@ export const ALLY_UNITS = [
     moveSpeed: 38,
     attackInterval: 2000,
     cost: 90,
-    healAmount: 15,      // 回復量（healerのみ）
-    healInterval: 2500,  // 回復間隔 (ms)
-    // TODO: 画像未確定
-    image: null
+    healAmount: 15,
+    healInterval: 2500,
+    image: 'medic.png'
   },
   {
     id: 'golden_bird',
