@@ -1,0 +1,312 @@
+/* ===========================
+   Condor Legacy - 戦闘画面
+   =========================== */
+
+#scene-battle {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+}
+
+/* ---- 上部ステータスバー ---- */
+#battle-header {
+  height: 48px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.battle-header-title {
+  font-family: var(--font-title);
+  font-size: 16px;
+  color: var(--color-gold);
+  letter-spacing: 0.15em;
+  min-width: 180px;
+}
+
+.resource-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.resource-label {
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.resource-value {
+  color: var(--color-gold);
+  font-size: 16px;
+  min-width: 50px;
+}
+
+/* 要塞HPバー */
+.fortress-hp-section {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.fortress-hp-label {
+  color: var(--color-text-dim);
+  letter-spacing: 0.1em;
+}
+
+.fortress-hp-bar {
+  width: 160px;
+  height: 10px;
+  background: #1a1a1a;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.fortress-hp-fill {
+  height: 100%;
+  background: var(--color-green);
+  transition: width 0.2s;
+}
+
+.fortress-hp-fill.low  { background: #e8a020; }
+.fortress-hp-fill.crit { background: var(--color-red); }
+
+.fortress-hp-num {
+  font-size: 13px;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* ---- メイン戦闘エリア ---- */
+#battle-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+#battle-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- 下部パネル（ユニット選択） ---- */
+#battle-footer {
+  height: 130px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+/* ユニット選択パレット */
+#unit-palette {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  overflow-x: auto;
+}
+
+.unit-card {
+  width: 88px;
+  height: 108px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s;
+}
+
+.unit-card:hover {
+  border-color: var(--color-accent);
+}
+
+.unit-card.selected {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 8px rgba(200, 168, 75, 0.4);
+}
+
+.unit-card.disabled,
+.unit-card.insufficient {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ユニット画像エリア */
+.unit-card-img {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.unit-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+/* 画像未設定時のプレースホルダー */
+.unit-placeholder {
+  width: 56px;
+  height: 56px;
+  border: 1px dashed var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--color-text-dim);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.unit-card-name {
+  font-size: 10px;
+  color: var(--color-text);
+  text-align: center;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.unit-card-cost {
+  font-size: 11px;
+  color: var(--color-gold);
+}
+
+/* コスト不足バッジ */
+.unit-card .cost-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 9px;
+  background: var(--color-red);
+  color: #fff;
+  padding: 1px 4px;
+  border-radius: 2px;
+  display: none;
+}
+
+.unit-card.insufficient .cost-badge {
+  display: block;
+}
+
+/* ---- 右サイドパネル（コントロール） ---- */
+#battle-controls {
+  width: 120px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+#battle-controls .btn {
+  width: 100%;
+  padding: 8px 4px;
+  font-size: 12px;
+}
+
+/* ---- 結果オーバーレイ ---- */
+#result-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.result-box {
+  text-align: center;
+  padding: 40px 60px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+}
+
+.result-title {
+  font-family: var(--font-title);
+  font-size: 48px;
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+
+.result-title.victory { color: var(--color-gold); }
+.result-title.defeat  { color: var(--color-red); }
+
+.result-subtitle {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 32px;
+}
+
+.result-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* ---- Wave表示 ---- */
+#wave-display {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+/* ---- Waveアナウンス ---- */
+#wave-announce {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-title);
+  font-size: 32px;
+  color: var(--color-red);
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 20px rgba(217, 64, 64, 0.8);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-transform: uppercase;
+}
+
+#wave-announce.show {
+  opacity: 1;
+}

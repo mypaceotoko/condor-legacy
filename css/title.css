@@ -1,0 +1,130 @@
+/* ===========================
+   Condor Legacy - タイトル画面
+   =========================== */
+
+#scene-title {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景エフェクト */
+#scene-title::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(74, 158, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(200, 168, 75, 0.05) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+/* タイトルロゴ */
+.title-logo {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.title-logo h1 {
+  font-family: var(--font-title);
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: normal;
+  letter-spacing: 0.25em;
+  color: var(--color-gold);
+  text-shadow:
+    0 0 20px rgba(200, 168, 75, 0.6),
+    0 0 60px rgba(200, 168, 75, 0.2);
+  line-height: 1.1;
+}
+
+.title-logo .subtitle {
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+}
+
+/* メニュー */
+.title-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.title-menu .btn {
+  width: 220px;
+  text-align: center;
+}
+
+/* バージョン表示 */
+.title-footer {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  font-size: 11px;
+  color: var(--color-text-dim);
+  letter-spacing: 0.1em;
+}
+
+/* ---- ステージ選択オーバーレイ ---- */
+#scene-stage-select {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.stage-select-title {
+  font-family: var(--font-title);
+  font-size: 28px;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+  margin-bottom: 40px;
+}
+
+.stage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 480px;
+}
+
+.stage-card {
+  padding: 16px 20px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.stage-card:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-dim);
+}
+
+.stage-card .stage-name {
+  font-size: 16px;
+  color: var(--color-text);
+  margin-bottom: 4px;
+  letter-spacing: 0.1em;
+}
+
+.stage-card .stage-desc {
+  font-size: 12px;
+  color: var(--color-text-dim);
+}
+
+.back-btn-wrap {
+  margin-top: 30px;
+}
