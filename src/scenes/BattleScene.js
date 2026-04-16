@@ -1,18 +1,18 @@
 /**
  * BattleScene.js — 戦闘画面
  *
- * - Canvas の初期化・リサイズ
- * - BattleManager / UIManager の生成・連携
- * - ユニット選択 UI の構築
- * - プレイヤーの配置操作（クリック）
- * - 結果オーバーレイの表示
+ * - Canvas 初期化・リサイズ
+ * - BattleManager / UIManager 生成・連携
+ * - ユニット選択 UI（クリック + キーボード 1〜6）
+ * - プレイヤー配置操作
+ * - 速度制御 (1x / 2x)
+ * - 結果オーバーレイ
  */
 
 import { BattleManager }                             from '../game/BattleManager.js';
 import { UIManager }                                 from '../game/UIManager.js';
 import { ALLY_UNITS, ENEMY_UNITS, getUnitImagePath } from '../config/units.js';
 
-// 味方ユニットを配置できるX範囲（左端から canvas 幅の何%まで）
 const DEPLOY_ZONE_RATIO = 0.55;
 
 export class BattleScene {
@@ -20,34 +20,43 @@ export class BattleScene {
     this._appEl      = appEl;
     this._switchTo   = switchTo;
     this._stageDef   = stageDef;
-    this._selected   = null;   // 選択中の味方ユニットID
+    this._selected   = null;
     this._manager    = null;
     this._ui         = null;
     this._imageCache = {};
-    this._dt         = 0;      // 最新フレームの dt を保持（render に渡すため）
+    this._speedMult  = 1;        // 1 or 2
+    this._timeInterval = null;
 
     this._buildHTML();
     this._preloadImages(() => this._startBattle());
   }
 
   update(dt) {
-    this._dt = dt;
-    if (this._manager) this._manager.update(dt);
+    if (!this._manager) return;
+    // 速度倍率を適用してゲームロジックを更新
+    this._manager.update(dt * this._speedMult);
   }
 
   render(dt) {
     if (!this._ui || !this._manager) return;
-    // 選択中ユニットがあるときだけ配置ゾーンをハイライト
+
     const showZone = this._selected !== null && this._manager.isRunning;
     this._ui.draw(
       this._manager.allyUnits,
       this._manager.enemyUnits,
-      dt,
+      dt * this._speedMult,
       showZone
     );
+
+    // BattleManager が蓄積したフロートイベントを UIManager に渡す
+    for (const ev of this._manager.floatEvents) {
+      this._ui.addFloatText(ev.x, ev.y, ev.text, ev.color);
+    }
   }
 
   destroy() {
+    this._clearTimers();
+    this._removeKeyListener();
     window.removeEventListener('resize', this._onResize);
     this._appEl.innerHTML = '';
   }
@@ -60,7 +69,6 @@ export class BattleScene {
     this._appEl.innerHTML = `
       <div id="scene-battle">
 
-        <!-- 上部ステータスバー -->
         <div id="battle-header">
           <span class="battle-header-title">CONDOR LEGACY</span>
 
@@ -88,34 +96,34 @@ export class BattleScene {
           </div>
         </div>
 
-        <!-- 戦場Canvas -->
         <div id="battle-main">
           <canvas id="battle-canvas"></canvas>
           <div id="wave-announce"></div>
         </div>
 
-        <!-- 下部パネル -->
         <div id="battle-footer">
-          <div id="unit-palette">
-            <!-- ユニットカードはJSで生成 -->
-          </div>
+          <div id="unit-palette"></div>
           <div id="battle-controls">
+            <button class="btn" id="btn-speed">2x速</button>
             <button class="btn" id="btn-pause">一時停止</button>
             <button class="btn" id="btn-retreat">撤退</button>
           </div>
         </div>
 
-        <!-- 結果オーバーレイ（初期非表示） -->
         <div id="result-overlay" class="hidden">
           <div class="result-box">
-            <div class="result-title"   id="result-title"></div>
+            <div class="result-title"    id="result-title"></div>
             <div class="result-subtitle" id="result-subtitle"></div>
+            <div class="result-stats"    id="result-stats"></div>
             <div class="result-buttons">
               <button class="btn btn-gold" id="btn-retry">もう一度</button>
               <button class="btn"          id="btn-stage-select">ステージ選択</button>
             </div>
           </div>
         </div>
+
+        <!-- ユニット情報ツールチップ -->
+        <div id="unit-tooltip" class="hidden"></div>
 
       </div>
     `;
@@ -125,6 +133,7 @@ export class BattleScene {
     this._bindButtons();
     this._bindCanvasClick();
     this._setupResize();
+    this._setupKeyboard();
   }
 
   // ----------------------------------------------------------------
@@ -133,8 +142,9 @@ export class BattleScene {
 
   _buildUnitPalette() {
     const palette = document.getElementById('unit-palette');
-    palette.innerHTML = ALLY_UNITS.map(def => `
-      <div class="unit-card" data-unit-id="${def.id}" title="${def.description}">
+    palette.innerHTML = ALLY_UNITS.map((def, i) => `
+      <div class="unit-card" data-unit-id="${def.id}" title="">
+        <div class="unit-card-key">${i + 1}</div>
         <div class="unit-card-img">
           ${def.image
             ? `<img src="${getUnitImagePath(def)}" alt="${def.name}" />`
@@ -148,19 +158,21 @@ export class BattleScene {
     `).join('');
 
     palette.querySelectorAll('.unit-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const id = card.dataset.unitId;
-        if (this._selected === id) {
-          // 同じカードをもう一度クリックで選択解除
-          this._selected = null;
-          this._clearCardSelection();
-        } else {
-          this._selected = id;
-          this._clearCardSelection();
-          card.classList.add('selected');
-        }
-      });
+      card.addEventListener('click', () => this._selectUnit(card.dataset.unitId));
+      card.addEventListener('mouseenter', (e) => this._showTooltip(card.dataset.unitId, e));
+      card.addEventListener('mouseleave', ()  => this._hideTooltip());
     });
+  }
+
+  _selectUnit(id) {
+    if (this._selected === id) {
+      this._selected = null;
+      this._clearCardSelection();
+    } else {
+      this._selected = id;
+      this._clearCardSelection();
+      document.querySelector(`.unit-card[data-unit-id="${id}"]`)?.classList.add('selected');
+    }
   }
 
   _clearCardSelection() {
@@ -168,10 +180,47 @@ export class BattleScene {
   }
 
   // ----------------------------------------------------------------
-  //  ボタン類
+  //  ツールチップ
+  // ----------------------------------------------------------------
+
+  _showTooltip(unitId, event) {
+    const def = ALLY_UNITS.find(u => u.id === unitId);
+    if (!def) return;
+    const tip = document.getElementById('unit-tooltip');
+    tip.innerHTML = `
+      <div class="tip-name">${def.name}</div>
+      <div class="tip-desc">${def.description}</div>
+      <div class="tip-stats">
+        <span>HP: ${def.hp}</span>
+        <span>ATK: ${def.attack}</span>
+        <span>DEF: ${def.defense}</span>
+        <span>射程: ${def.range}</span>
+        <span>速度: ${def.moveSpeed}</span>
+      </div>
+    `;
+    tip.classList.remove('hidden');
+    // カードの上に表示
+    const rect = event.currentTarget.getBoundingClientRect();
+    tip.style.left = `${rect.left}px`;
+    tip.style.top  = `${rect.top - tip.offsetHeight - 8}px`;
+  }
+
+  _hideTooltip() {
+    document.getElementById('unit-tooltip')?.classList.add('hidden');
+  }
+
+  // ----------------------------------------------------------------
+  //  ボタン
   // ----------------------------------------------------------------
 
   _bindButtons() {
+    document.getElementById('btn-speed').addEventListener('click', () => {
+      this._speedMult = this._speedMult === 1 ? 2 : 1;
+      document.getElementById('btn-speed').textContent =
+        this._speedMult === 2 ? '1x速' : '2x速';
+      document.getElementById('btn-speed').classList.toggle('active', this._speedMult === 2);
+    });
+
     document.getElementById('btn-pause').addEventListener('click', () => {
       if (!this._manager) return;
       if (this._manager.isRunning) {
@@ -199,13 +248,42 @@ export class BattleScene {
   }
 
   // ----------------------------------------------------------------
+  //  キーボードショートカット
+  // ----------------------------------------------------------------
+
+  _setupKeyboard() {
+    this._onKeyDown = (e) => {
+      // 1〜6 でユニット選択
+      const idx = parseInt(e.key, 10) - 1;
+      if (idx >= 0 && idx < ALLY_UNITS.length) {
+        this._selectUnit(ALLY_UNITS[idx].id);
+        return;
+      }
+      // ESC で選択解除
+      if (e.key === 'Escape') {
+        this._selected = null;
+        this._clearCardSelection();
+      }
+      // Space でポーズ切替
+      if (e.key === ' ') {
+        e.preventDefault();
+        document.getElementById('btn-pause')?.click();
+      }
+    };
+    window.addEventListener('keydown', this._onKeyDown);
+  }
+
+  _removeKeyListener() {
+    if (this._onKeyDown) window.removeEventListener('keydown', this._onKeyDown);
+  }
+
+  // ----------------------------------------------------------------
   //  Canvas クリック → ユニット配置
   // ----------------------------------------------------------------
 
   _bindCanvasClick() {
     this._canvasEl.addEventListener('click', (e) => {
-      if (!this._manager || !this._manager.isRunning) return;
-      if (!this._selected) return;
+      if (!this._manager?.isRunning || !this._selected) return;
 
       const rect   = this._canvasEl.getBoundingClientRect();
       const scaleX = this._canvasEl.width  / rect.width;
@@ -213,18 +291,16 @@ export class BattleScene {
       const x = (e.clientX - rect.left) * scaleX;
       const y = (e.clientY - rect.top)  * scaleY;
 
-      // 配置可能ゾーン（要塞ライン右側 〜 中央より少し先まで）
       const maxX = this._canvasEl.width * DEPLOY_ZONE_RATIO;
       if (x < 50 || x > maxX) return;
 
-      const ok = this._manager.deployAlly(this._selected, x, y);
-      if (!ok) {
-        this._flashInsufficientGold();
+      if (!this._manager.deployAlly(this._selected, x, y)) {
+        this._flashGold();
       }
     });
   }
 
-  _flashInsufficientGold() {
+  _flashGold() {
     const el = document.getElementById('gold-display');
     if (!el) return;
     el.style.color = '#d94040';
@@ -263,10 +339,7 @@ export class BattleScene {
     const allDefs   = [...ALLY_UNITS, ...ENEMY_UNITS];
     const withImage = allDefs.filter(d => d.image !== null);
 
-    if (withImage.length === 0) {
-      callback();
-      return;
-    }
+    if (withImage.length === 0) { callback(); return; }
 
     let remaining = withImage.length;
     for (const def of withImage) {
@@ -277,7 +350,7 @@ export class BattleScene {
         if (--remaining === 0) callback();
       };
       img.onload  = done;
-      img.onerror = done;  // 画像が見つからなくても進行を止めない
+      img.onerror = done;
     }
   }
 
@@ -294,20 +367,30 @@ export class BattleScene {
       this._imageCache,
       this._canvasEl.width,
       this._canvasEl.height,
-      (gold)            => this._onGoldChange(gold),
-      (hp, maxHp)       => this._onFortressHpChange(hp, maxHp),
-      (waveIdx, total)  => this._onWaveStart(waveIdx, total),
-      (result)          => this._onResult(result)
+      (gold)           => this._onGoldChange(gold),
+      (hp, maxHp)      => this._onFortressHpChange(hp, maxHp),
+      (waveIdx, total) => this._onWaveStart(waveIdx, total),
+      (result)         => this._onResult(result)
     );
 
-    // 初期表示を即時反映
     this._onGoldChange(this._manager.gold);
     this._onFortressHpChange(this._manager.fortressHp, this._manager.fortressMaxHp);
 
-    // 経過時間表示の更新タイマー
+    // 経過時間表示 (500ms ごと)
     this._timeInterval = setInterval(() => this._updateTimeDisplay(), 500);
 
     this._manager.start();
+  }
+
+  // ----------------------------------------------------------------
+  //  タイマー・リスナーのクリーンアップ
+  // ----------------------------------------------------------------
+
+  _clearTimers() {
+    if (this._timeInterval) {
+      clearInterval(this._timeInterval);
+      this._timeInterval = null;
+    }
   }
 
   // ----------------------------------------------------------------
@@ -317,8 +400,6 @@ export class BattleScene {
   _onGoldChange(gold) {
     const el = document.getElementById('gold-display');
     if (el) el.textContent = gold;
-
-    // コスト不足のカードをグレーアウト
     document.querySelectorAll('.unit-card').forEach(card => {
       const def = ALLY_UNITS.find(u => u.id === card.dataset.unitId);
       if (def) card.classList.toggle('insufficient', gold < def.cost);
@@ -329,20 +410,17 @@ export class BattleScene {
     const fill = document.getElementById('fortress-hp-fill');
     const num  = document.getElementById('fortress-hp-num');
     if (!fill || !num) return;
-
     const ratio = hp / maxHp;
     fill.style.width = `${Math.round(ratio * 100)}%`;
     num.textContent  = `${hp} / ${maxHp}`;
-
-    fill.className = 'fortress-hp-fill';
-    if (ratio <= 0.25)      fill.classList.add('crit');
-    else if (ratio <= 0.5)  fill.classList.add('low');
+    fill.className   = 'fortress-hp-fill';
+    if (ratio <= 0.25)     fill.classList.add('crit');
+    else if (ratio <= 0.5) fill.classList.add('low');
   }
 
   _onWaveStart(waveIdx, total) {
     const el = document.getElementById('wave-display-val');
     if (el) el.textContent = `${waveIdx + 1} / ${total}`;
-
     const announce = document.getElementById('wave-announce');
     if (announce) {
       announce.textContent = `WAVE ${waveIdx + 1}`;
@@ -353,20 +431,26 @@ export class BattleScene {
 
   _updateTimeDisplay() {
     if (!this._manager) return;
-    const sec   = Math.floor(this._manager.elapsed / 1000);
-    const m     = Math.floor(sec / 60);
-    const s     = String(sec % 60).padStart(2, '0');
-    const el    = document.getElementById('time-display');
+    const sec = Math.floor(this._manager.elapsed / 1000);
+    const m   = Math.floor(sec / 60);
+    const s   = String(sec % 60).padStart(2, '0');
+    const el  = document.getElementById('time-display');
     if (el) el.textContent = `${m}:${s}`;
   }
 
   _onResult(result) {
-    // タイマー停止
-    if (this._timeInterval) clearInterval(this._timeInterval);
+    this._clearTimers();
+
+    const sec     = Math.floor((this._manager?.elapsed ?? 0) / 1000);
+    const m       = Math.floor(sec / 60);
+    const s       = String(sec % 60).padStart(2, '0');
+    const waveDone = this._manager?._activeWaveIdx ?? 0;
+    const total    = this._stageDef.waves.length;
 
     const overlay  = document.getElementById('result-overlay');
     const title    = document.getElementById('result-title');
     const subtitle = document.getElementById('result-subtitle');
+    const stats    = document.getElementById('result-stats');
     if (!overlay) return;
 
     if (result === 'victory') {
@@ -378,6 +462,12 @@ export class BattleScene {
       title.className      = 'result-title defeat';
       subtitle.textContent = '砦は陥落した。再起を誓え。';
     }
+
+    stats.innerHTML = `
+      <span>経過時間: ${m}:${s}</span>
+      <span>Wave: ${waveDone} / ${total}</span>
+      <span>残Gold: ${this._manager?.gold ?? 0}</span>
+    `;
 
     overlay.classList.remove('hidden');
   }
