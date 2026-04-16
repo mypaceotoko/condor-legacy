@@ -111,18 +111,17 @@ export const ALLY_UNITS = [
 export const ENEMY_UNITS = [
   {
     id: 'grunt',
-    name: 'グラント',
+    name: 'サイクロプス',
     side: 'enemy',
-    description: '最も基本的な敵歩兵。能力は低めだが数が多い。',
+    description: '単眼の昆虫型モンスター。能力は低めだが群れで押し寄せてくる。',
     hp: 80,
     attack: 16,
     defense: 6,
     range: 55,
     moveSpeed: 38,
     attackInterval: 1400,
-    reward: 20,          // 撃破時の報酬
-    // TODO: 画像未確定
-    image: null
+    reward: 20,
+    image: 'grunt.png'
   },
   {
     id: 'brute',
