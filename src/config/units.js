@@ -32,9 +32,9 @@ export const ALLY_UNITS = [
   },
   {
     id: 'sharpshooter',
-    name: 'シャープシューター',
+    name: 'アリア',
     side: 'ally',
-    description: '遠距離から正確に射撃する弓兵。射程が長い。',
+    description: 'クロスボウを操る俊足の射手。遠距離から正確に敵を狙い撃つ。',
     hp: 80,
     attack: 28,
     defense: 6,
@@ -42,8 +42,7 @@ export const ALLY_UNITS = [
     moveSpeed: 36,
     attackInterval: 1800,
     cost: 100,
-    // TODO: 画像未確定
-    image: null
+    image: 'sharpshooter.png'
   },
   {
     id: 'iron_guard',
