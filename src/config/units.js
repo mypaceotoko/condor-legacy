@@ -28,8 +28,7 @@ export const ALLY_UNITS = [
     moveSpeed: 42,       // 移動速度 (px/sec)
     attackInterval: 1200, // 攻撃間隔 (ms)
     cost: 80,
-    // TODO: 画像未確定 — 確認後に "vanguard.png" などを設定
-    image: null
+    image: 'vanguard.png'
   },
   {
     id: 'sharpshooter',
