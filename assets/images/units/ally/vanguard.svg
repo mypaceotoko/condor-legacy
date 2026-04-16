@@ -1,32 +1,83 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="68" height="80" viewBox="0 0 68 80">
 <defs>
-  <linearGradient id="ar" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5a90ff"/><stop offset="100%" stop-color="#1a3090"/></linearGradient>
-  <linearGradient id="sk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0c090"/><stop offset="100%" stop-color="#b07040"/></linearGradient>
-  <radialGradient id="sh" cx="30%" cy="25%" r="70%"><stop offset="0%" stop-color="#6090ff"/><stop offset="100%" stop-color="#102060"/></radialGradient>
-  <linearGradient id="sw" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#d8e8f0"/><stop offset="50%" stop-color="#f0f8ff"/><stop offset="100%" stop-color="#7090a0"/></linearGradient>
+  <linearGradient id="tunic" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3a9ab8"/><stop offset="100%" stop-color="#1e6080"/></linearGradient>
+  <linearGradient id="skin" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f2b880"/><stop offset="100%" stop-color="#c88048"/></linearGradient>
+  <linearGradient id="pant" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c8c838"/><stop offset="100%" stop-color="#909018"/></linearGradient>
+  <linearGradient id="sw" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e8f4f8"/><stop offset="50%" stop-color="#c0d8e0"/><stop offset="100%" stop-color="#7090a0"/></linearGradient>
 </defs>
 <ellipse cx="34" cy="78" rx="16" ry="3" fill="rgba(0,0,0,0.3)"/>
-<rect x="35" y="57" width="11" height="20" rx="2" fill="#1a3080"/>
-<rect x="20" y="57" width="11" height="20" rx="2" fill="url(#ar)"/>
-<rect x="18" y="71" width="15" height="8" rx="2" fill="#0e1840"/>
-<rect x="33" y="71" width="15" height="8" rx="2" fill="#0e1840"/>
-<rect x="16" y="27" width="34" height="31" rx="3" fill="url(#ar)"/>
-<path d="M20 33 L48 33 L48 52 L20 52Z" fill="none" stroke="#8ab0ff" stroke-width="0.7" opacity="0.55"/>
-<line x1="34" y1="33" x2="34" y2="52" stroke="#8ab0ff" stroke-width="0.5" opacity="0.4"/>
-<ellipse cx="16" cy="29" rx="10" ry="5" fill="#1e3898"/><ellipse cx="15" cy="28" rx="8" ry="4" fill="#2e50c8" stroke="#5070e0" stroke-width="0.5"/>
-<ellipse cx="52" cy="29" rx="10" ry="5" fill="#1e3898"/><ellipse cx="53" cy="28" rx="8" ry="4" fill="#2e50c8" stroke="#5070e0" stroke-width="0.5"/>
-<path d="M1 24 L15 20 L17 52 L1 56Z" fill="url(#sh)" stroke="#3060a0" stroke-width="0.8"/>
-<line x1="7" y1="32" x2="7" y2="48" stroke="#90b8ff" stroke-width="1.5" opacity="0.8"/>
-<line x1="3" y1="40" x2="11" y2="40" stroke="#90b8ff" stroke-width="1.5" opacity="0.8"/>
-<rect x="52" y="16" width="4" height="44" rx="1" fill="url(#sw)"/>
-<rect x="49" y="22" width="10" height="4" rx="1" fill="#c8a020"/>
-<ellipse cx="54" cy="17" rx="3" ry="3" fill="#9090a0"/>
-<ellipse cx="33" cy="17" rx="13" ry="14" fill="url(#sk)"/>
-<path d="M20 17 Q20 3 33 3 Q46 3 46 17Z" fill="#1a3898"/>
-<path d="M24 17 Q24 7 33 6 Q42 7 42 17Z" fill="#2848c8"/>
-<rect x="31" y="2" width="4" height="8" rx="1" fill="#3060e0"/>
-<path d="M27 8 Q33 5 39 8" fill="none" stroke="#7090ff" stroke-width="1.5" opacity="0.7"/>
-<rect x="23" y="14" width="20" height="6" rx="1" fill="#080f1e"/>
-<rect x="24" y="15" width="8" height="4" rx="0.5" fill="#3060d0" opacity="0.9"/>
-<rect x="34" y="15" width="8" height="4" rx="0.5" fill="#3060d0" opacity="0.9"/>
+<!-- Boots -->
+<rect x="19" y="64" width="13" height="14" rx="2" fill="#3a1e0c"/>
+<rect x="34" y="64" width="13" height="14" rx="2" fill="#3a1e0c"/>
+<rect x="17" y="70" width="17" height="7" rx="2" fill="#2a1408"/>
+<rect x="32" y="70" width="17" height="7" rx="2" fill="#2a1408"/>
+<!-- Green lower leg wraps -->
+<rect x="19" y="58" width="13" height="8" rx="1" fill="#3a6020"/>
+<rect x="34" y="58" width="13" height="8" rx="1" fill="#3a6020"/>
+<!-- Baggy yellow-green pants -->
+<rect x="18" y="48" width="15" height="14" rx="3" fill="url(#pant)"/>
+<rect x="33" y="48" width="15" height="14" rx="3" fill="url(#pant)"/>
+<rect x="15" y="52" width="38" height="6" rx="3" fill="url(#pant)" opacity="0.6"/>
+<!-- Teal tunic body -->
+<rect x="15" y="28" width="36" height="24" rx="2" fill="url(#tunic)"/>
+<path d="M29 28 L34 38 L39 28" fill="#1a5068" opacity="0.6"/>
+<path d="M15 36 L15 50" stroke="#2a7090" stroke-width="1" opacity="0.4"/>
+<path d="M51 36 L51 50" stroke="#2a7090" stroke-width="1" opacity="0.4"/>
+<!-- Brown leather belt + gold buckle -->
+<rect x="15" y="48" width="36" height="5" rx="1" fill="#5a2e10"/>
+<rect x="29" y="47" width="9" height="7" rx="1" fill="#c8a020"/>
+<rect x="31" y="48" width="5" height="5" rx="0.5" fill="#a07810"/>
+<!-- Yellow/orange scarf at neck -->
+<path d="M21 27 Q34 32 47 27 L46 33 Q34 30 22 33Z" fill="#f0a818"/>
+<path d="M40 32 L50 42 L48 44 L37 34Z" fill="#e09010" opacity="0.7"/>
+<!-- Left arm -->
+<rect x="6" y="29" width="9" height="20" rx="2" fill="url(#skin)"/>
+<!-- Right arm -->
+<rect x="51" y="29" width="9" height="20" rx="2" fill="url(#skin)"/>
+<!-- Brown fingerless gauntlets -->
+<rect x="5" y="43" width="11" height="7" rx="1" fill="#5a2e10"/>
+<rect x="50" y="38" width="11" height="7" rx="1" fill="#5a2e10"/>
+<!-- Purple pouch left -->
+<rect x="7" y="46" width="10" height="12" rx="2" fill="#7040a0"/>
+<rect x="8" y="47" width="8" height="2" rx="1" fill="#9060c0"/>
+<!-- Sword (right side, angled) -->
+<rect x="57" y="8" width="4" height="42" rx="1" fill="url(#sw)"/>
+<path d="M57 10 L61 10 L59 8Z" fill="#d0e8f0"/>
+<!-- Sword guard (gold) -->
+<rect x="53" y="28" width="12" height="4" rx="1" fill="#c8a020"/>
+<!-- Sword handle (dark) -->
+<rect x="56" y="32" width="6" height="12" rx="1" fill="#200c08"/>
+<rect x="57" y="38" width="4" height="3" rx="0.5" fill="#c8a020"/>
+<!-- Head (skin) -->
+<ellipse cx="32" cy="19" rx="13" ry="14" fill="url(#skin)"/>
+<!-- White headband -->
+<rect x="20" y="13" width="24" height="5" rx="1.5" fill="#f4f4f0"/>
+<!-- Headband trailing ribbon (white) -->
+<path d="M42 13 Q52 8 60 10 Q54 14 44 17Z" fill="#eeeee8"/>
+<!-- Blue eyes -->
+<ellipse cx="26" cy="20" rx="3.5" ry="4" fill="#0050c0"/>
+<ellipse cx="38" cy="20" rx="3.5" ry="4" fill="#0050c0"/>
+<ellipse cx="26" cy="19" rx="2" ry="2.5" fill="#2080f0"/>
+<ellipse cx="38" cy="19" rx="2" ry="2.5" fill="#2080f0"/>
+<circle cx="25" cy="17" r="1.2" fill="#ffffff" opacity="0.8"/>
+<circle cx="37" cy="17" r="1.2" fill="#ffffff" opacity="0.8"/>
+<!-- Dark eyebrows -->
+<path d="M22 15 Q26 13 30 15" fill="none" stroke="#2a1008" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M34 15 Q38 13 42 15" fill="none" stroke="#2a1008" stroke-width="1.8" stroke-linecap="round"/>
+<!-- Nose/mouth -->
+<circle cx="32" cy="23" r="1.2" fill="#c08050" opacity="0.35"/>
+<path d="M29 25 Q32 27 35 25" fill="none" stroke="#b07040" stroke-width="1" opacity="0.5"/>
+<!-- Red spiky hair (main mass) -->
+<ellipse cx="32" cy="9" rx="15" ry="9" fill="#c01818"/>
+<ellipse cx="32" cy="10" rx="12" ry="7" fill="#d82020" opacity="0.6"/>
+<!-- Hair spikes radiating outward -->
+<polygon points="14,16 6,6  18,10" fill="#c81818"/>
+<polygon points="18,8  12,0  22,6"  fill="#d02020"/>
+<polygon points="24,5  22,-2 29,3"  fill="#c81818"/>
+<polygon points="32,4  30,-2 36,2"  fill="#d82020"/>
+<polygon points="40,5  44,-2 38,3"  fill="#c81818"/>
+<polygon points="46,8  54,0  44,6"  fill="#d02020"/>
+<polygon points="50,14 58,6  48,10" fill="#c81818"/>
+<!-- Hair highlight -->
+<path d="M22 8 Q32 3 42 8" fill="none" stroke="#f04040" stroke-width="2" opacity="0.5"/>
 </svg>
