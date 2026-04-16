@@ -139,9 +139,9 @@ export const ENEMY_UNITS = [
   },
   {
     id: 'raider',
-    name: 'レイダー',
+    name: 'スクリーチャー',
     side: 'enemy',
-    description: '遠距離から矢を放つ敵射手。接近前に攻撃してくる。',
+    description: '凶暴な鳥型モンスター。遠距離から鋭い羽根を飛ばし、接近前に攻撃してくる。',
     hp: 70,
     attack: 26,
     defense: 5,
@@ -149,8 +149,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 34,
     attackInterval: 1900,
     reward: 40,
-    // TODO: 画像未確定
-    image: null
+    image: 'raider.png'
   },
   {
     id: 'warlord',
