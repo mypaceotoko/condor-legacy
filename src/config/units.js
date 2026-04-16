@@ -46,9 +46,9 @@ export const ALLY_UNITS = [
   },
   {
     id: 'iron_guard',
-    name: 'アイアンガード',
+    name: 'スチームゴーレム',
     side: 'ally',
-    description: '重装甲の盾役。HPと防御が高いが移動は遅い。',
+    description: '蒸気機関で動く重装甲ゴーレム。HPと防御が群を抜いて高く、前線の壁となる。',
     hp: 220,
     attack: 14,
     defense: 25,
@@ -56,8 +56,7 @@ export const ALLY_UNITS = [
     moveSpeed: 25,
     attackInterval: 1500,
     cost: 120,
-    // TODO: 画像未確定
-    image: null
+    image: 'iron_guard.png'
   },
   {
     id: 'pyromancer',
