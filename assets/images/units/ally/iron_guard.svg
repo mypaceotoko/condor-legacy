@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="68" height="80" viewBox="0 0 68 80">
 <defs>
   <linearGradient id="mt" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8090a0"/><stop offset="50%" stop-color="#b0c0cc"/><stop offset="100%" stop-color="#4a5560"/></linearGradient>
-  <linearGradient id="dk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6070808"/><stop offset="100%" stop-color="#2a3038"/></linearGradient>
+  <linearGradient id="dk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#607080"/><stop offset="100%" stop-color="#2a3038"/></linearGradient>
   <radialGradient id="eye" cx="40%" cy="40%" r="60%"><stop offset="0%" stop-color="#ff8060"/><stop offset="60%" stop-color="#cc2000"/><stop offset="100%" stop-color="#600000"/></radialGradient>
 </defs>
 <ellipse cx="34" cy="78" rx="22" ry="4" fill="rgba(0,0,0,0.4)"/>
@@ -10,14 +10,14 @@
 <rect x="14" y="72" width="20" height="7" rx="2" fill="#2a3038"/>
 <rect x="34" y="72" width="20" height="7" rx="2" fill="#2a3038"/>
 <rect x="10" y="24" width="48" height="40" rx="4" fill="url(#mt)"/>
-<rect x="14" y="28" width="40" height="32" rx="2" fill="#7080908" opacity="0.3"/>
+<rect x="14" y="28" width="40" height="32" rx="2" fill="#708090" opacity="0.3"/>
 <line x1="14" y1="37" x2="54" y2="37" stroke="#3a4550" stroke-width="1.5" opacity="0.6"/>
 <line x1="14" y1="47" x2="54" y2="47" stroke="#3a4550" stroke-width="1.5" opacity="0.6"/>
 <line x1="34" y1="28" x2="34" y2="60" stroke="#3a4550" stroke-width="1" opacity="0.5"/>
-<circle cx="22" cy="38" r="3" fill="#3a4550"/><circle cx="22" cy="38" r="1.5" fill="#6080908"/>
-<circle cx="46" cy="38" r="3" fill="#3a4550"/><circle cx="46" cy="38" r="1.5" fill="#6080908"/>
-<circle cx="22" cy="50" r="3" fill="#3a4550"/><circle cx="22" cy="50" r="1.5" fill="#6080908"/>
-<circle cx="46" cy="50" r="3" fill="#3a4550"/><circle cx="46" cy="50" r="1.5" fill="#6080908"/>
+<circle cx="22" cy="38" r="3" fill="#3a4550"/><circle cx="22" cy="38" r="1.5" fill="#608090"/>
+<circle cx="46" cy="38" r="3" fill="#3a4550"/><circle cx="46" cy="38" r="1.5" fill="#608090"/>
+<circle cx="22" cy="50" r="3" fill="#3a4550"/><circle cx="22" cy="50" r="1.5" fill="#608090"/>
+<circle cx="46" cy="50" r="3" fill="#3a4550"/><circle cx="46" cy="50" r="1.5" fill="#608090"/>
 <rect x="0" y="26" width="12" height="28" rx="3" fill="url(#mt)"/>
 <rect x="56" y="26" width="12" height="28" rx="3" fill="url(#mt)"/>
 <rect x="0" y="48" width="14" height="10" rx="2" fill="#3a4550"/>
@@ -25,13 +25,13 @@
 <rect x="2" y="24" width="8" height="6" rx="1" fill="#606878" stroke="#8090a0" stroke-width="0.5"/>
 <rect x="58" y="24" width="8" height="6" rx="1" fill="#606878" stroke="#8090a0" stroke-width="0.5"/>
 <ellipse cx="34" cy="14" rx="16" ry="14" fill="url(#mt)"/>
-<ellipse cx="34" cy="13" rx="13" ry="11" fill="#6878889"/>
+<ellipse cx="34" cy="13" rx="13" ry="11" fill="#687888"/>
 <circle cx="34" cy="13" r="9" fill="url(#eye)"/>
 <circle cx="34" cy="13" r="5" fill="#ff2000"/>
 <circle cx="34" cy="13" r="2" fill="#ff8060"/>
 <circle cx="31" cy="10" r="1.5" fill="#ffb090" opacity="0.7"/>
-<rect x="18" y="2" width="5" height="8" rx="1" fill="#5060708"/>
-<rect x="26" y="1" width="5" height="6" rx="1" fill="#5060708"/>
-<rect x="37" y="1" width="5" height="6" rx="1" fill="#5060708"/>
-<rect x="45" y="2" width="5" height="8" rx="1" fill="#5060708"/>
+<rect x="18" y="2" width="5" height="8" rx="1" fill="#506070"/>
+<rect x="26" y="1" width="5" height="6" rx="1" fill="#506070"/>
+<rect x="37" y="1" width="5" height="6" rx="1" fill="#506070"/>
+<rect x="45" y="2" width="5" height="8" rx="1" fill="#506070"/>
 </svg>

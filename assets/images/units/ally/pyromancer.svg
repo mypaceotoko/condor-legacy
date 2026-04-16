@@ -16,7 +16,7 @@
 <circle cx="52" cy="12" r="1.5" fill="#ffffff" opacity="0.7"/>
 <circle cx="10" cy="42" r="4" fill="#8000c0" opacity="0.5"/>
 <circle cx="8" cy="55" r="3" fill="#6000a0" opacity="0.4"/>
-<circle cx="14" cy="65" r="2.5" fill="#4000800" opacity="0.35"/>
+<circle cx="14" cy="65" r="2.5" fill="#400080" opacity="0.35"/>
 <ellipse cx="34" cy="16" rx="12" ry="13" fill="#1e1428"/>
 <path d="M22 16 Q22 3 34 3 Q46 3 46 16Z" fill="#0e0818"/>
 <path d="M24 16 Q24 8 34 7 Q44 8 44 16Z" fill="#180c28"/>
