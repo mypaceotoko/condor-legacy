@@ -8,8 +8,8 @@
 import { UnitState } from './Unit.js';
 
 // ユニットの描画サイズ
-const UNIT_W = 48;
-const UNIT_H = 56;
+const UNIT_W = 68;
+const UNIT_H = 80;
 
 // 配置ゾーンの右端 (canvas幅に対する割合) — BattleScene と一致させること
 const DEPLOY_ZONE_RATIO = 0.55;
@@ -180,11 +180,11 @@ export class UIManager {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // ラベル
+    // ラベル（配置ゾーン中央に表示）
     ctx.fillStyle = 'rgba(74, 158, 100, 0.5)';
     ctx.font      = '11px Courier New';
     ctx.textAlign = 'center';
-    ctx.fillText('DEPLOY ZONE', maxX / 2 + 21, 18);
+    ctx.fillText('DEPLOY ZONE', (50 + maxX) / 2, 18);
     ctx.textAlign = 'left';
   }
 

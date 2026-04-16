@@ -198,11 +198,12 @@ export class BattleScene {
         <span>速度: ${def.moveSpeed}</span>
       </div>
     `;
+    // いったん visible にしてから高さを読む
     tip.classList.remove('hidden');
-    // カードの上に表示
     const rect = event.currentTarget.getBoundingClientRect();
-    tip.style.left = `${rect.left}px`;
-    tip.style.top  = `${rect.top - tip.offsetHeight - 8}px`;
+    const tipH = tip.offsetHeight;
+    tip.style.left = `${Math.max(4, rect.left)}px`;
+    tip.style.top  = `${Math.max(4, rect.top - tipH - 8)}px`;
   }
 
   _hideTooltip() {
