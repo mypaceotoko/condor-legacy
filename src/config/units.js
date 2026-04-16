@@ -91,6 +91,20 @@ export const ALLY_UNITS = [
     healInterval: 2500,  // 回復間隔 (ms)
     // TODO: 画像未確定
     image: null
+  },
+  {
+    id: 'golden_bird',
+    name: 'ゴールデンバード',
+    side: 'ally',
+    description: '黄金の快速鳥。移動速度が群を抜いて速く、敵陣を素早く切り崩す。',
+    hp: 90,
+    attack: 18,
+    defense: 5,
+    range: 55,
+    moveSpeed: 95,       // 最速クラス
+    attackInterval: 900,
+    cost: 110,
+    image: 'golden_bird.png'
   }
 ];
 
