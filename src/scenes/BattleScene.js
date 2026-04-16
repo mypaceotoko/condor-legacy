@@ -8,38 +8,43 @@
  * - 結果オーバーレイの表示
  */
 
-import { BattleManager }                        from '../game/BattleManager.js';
-import { UIManager }                            from '../game/UIManager.js';
+import { BattleManager }                             from '../game/BattleManager.js';
+import { UIManager }                                 from '../game/UIManager.js';
 import { ALLY_UNITS, ENEMY_UNITS, getUnitImagePath } from '../config/units.js';
 
-// 味方ユニットを配置できるX範囲(左端から canvas 幅の何%まで)
+// 味方ユニットを配置できるX範囲（左端から canvas 幅の何%まで）
 const DEPLOY_ZONE_RATIO = 0.55;
 
 export class BattleScene {
-  /**
-   * @param {Object} stageDef - stages.js のステージ定義
-   */
   init(appEl, switchTo, stageDef) {
     this._appEl      = appEl;
     this._switchTo   = switchTo;
     this._stageDef   = stageDef;
-    this._selected   = null;      // 選択中のユニットID
+    this._selected   = null;   // 選択中の味方ユニットID
     this._manager    = null;
     this._ui         = null;
     this._imageCache = {};
+    this._dt         = 0;      // 最新フレームの dt を保持（render に渡すため）
 
     this._buildHTML();
     this._preloadImages(() => this._startBattle());
   }
 
   update(dt) {
+    this._dt = dt;
     if (this._manager) this._manager.update(dt);
   }
 
-  render() {
+  render(dt) {
     if (!this._ui || !this._manager) return;
-    this._ui.draw(this._manager.allyUnits, this._manager.enemyUnits, 16);
-    this._updateGoldDisplay();
+    // 選択中ユニットがあるときだけ配置ゾーンをハイライト
+    const showZone = this._selected !== null && this._manager.isRunning;
+    this._ui.draw(
+      this._manager.allyUnits,
+      this._manager.enemyUnits,
+      dt,
+      showZone
+    );
   }
 
   destroy() {
@@ -48,12 +53,13 @@ export class BattleScene {
   }
 
   // ----------------------------------------------------------------
-  //  HTML構築
+  //  HTML 構築
   // ----------------------------------------------------------------
 
   _buildHTML() {
     this._appEl.innerHTML = `
       <div id="scene-battle">
+
         <!-- 上部ステータスバー -->
         <div id="battle-header">
           <span class="battle-header-title">CONDOR LEGACY</span>
@@ -65,14 +71,18 @@ export class BattleScene {
 
           <div class="resource-display">
             <span class="resource-label">Wave</span>
-            <span class="resource-value" id="wave-display-val">-</span>
+            <span class="resource-value" id="wave-display-val">待機中</span>
           </div>
 
-          <!-- 要塞HP -->
+          <div class="resource-display">
+            <span class="resource-label">Time</span>
+            <span class="resource-value" id="time-display">0:00</span>
+          </div>
+
           <div class="fortress-hp-section">
             <span class="fortress-hp-label">要塞HP</span>
             <div class="fortress-hp-bar">
-              <div class="fortress-hp-fill" id="fortress-hp-fill"></div>
+              <div class="fortress-hp-fill" id="fortress-hp-fill" style="width:100%"></div>
             </div>
             <span class="fortress-hp-num" id="fortress-hp-num">-</span>
           </div>
@@ -95,10 +105,10 @@ export class BattleScene {
           </div>
         </div>
 
-        <!-- 結果オーバーレイ (初期非表示) -->
+        <!-- 結果オーバーレイ（初期非表示） -->
         <div id="result-overlay" class="hidden">
           <div class="result-box">
-            <div class="result-title" id="result-title"></div>
+            <div class="result-title"   id="result-title"></div>
             <div class="result-subtitle" id="result-subtitle"></div>
             <div class="result-buttons">
               <button class="btn btn-gold" id="btn-retry">もう一度</button>
@@ -106,15 +116,20 @@ export class BattleScene {
             </div>
           </div>
         </div>
+
       </div>
     `;
 
     this._canvasEl = document.getElementById('battle-canvas');
     this._buildUnitPalette();
-    this._bindHeaderButtons();
+    this._bindButtons();
     this._bindCanvasClick();
     this._setupResize();
   }
+
+  // ----------------------------------------------------------------
+  //  ユニットパレット
+  // ----------------------------------------------------------------
 
   _buildUnitPalette() {
     const palette = document.getElementById('unit-palette');
@@ -136,6 +151,7 @@ export class BattleScene {
       card.addEventListener('click', () => {
         const id = card.dataset.unitId;
         if (this._selected === id) {
+          // 同じカードをもう一度クリックで選択解除
           this._selected = null;
           this._clearCardSelection();
         } else {
@@ -151,7 +167,11 @@ export class BattleScene {
     document.querySelectorAll('.unit-card').forEach(c => c.classList.remove('selected'));
   }
 
-  _bindHeaderButtons() {
+  // ----------------------------------------------------------------
+  //  ボタン類
+  // ----------------------------------------------------------------
+
+  _bindButtons() {
     document.getElementById('btn-pause').addEventListener('click', () => {
       if (!this._manager) return;
       if (this._manager.isRunning) {
@@ -178,18 +198,22 @@ export class BattleScene {
     });
   }
 
+  // ----------------------------------------------------------------
+  //  Canvas クリック → ユニット配置
+  // ----------------------------------------------------------------
+
   _bindCanvasClick() {
     this._canvasEl.addEventListener('click', (e) => {
       if (!this._manager || !this._manager.isRunning) return;
       if (!this._selected) return;
 
-      const rect = this._canvasEl.getBoundingClientRect();
+      const rect   = this._canvasEl.getBoundingClientRect();
       const scaleX = this._canvasEl.width  / rect.width;
       const scaleY = this._canvasEl.height / rect.height;
       const x = (e.clientX - rect.left) * scaleX;
       const y = (e.clientY - rect.top)  * scaleY;
 
-      // 配置可能ゾーンチェック（左側のみ）
+      // 配置可能ゾーン（要塞ライン右側 〜 中央より少し先まで）
       const maxX = this._canvasEl.width * DEPLOY_ZONE_RATIO;
       if (x < 50 || x > maxX) return;
 
@@ -202,6 +226,7 @@ export class BattleScene {
 
   _flashInsufficientGold() {
     const el = document.getElementById('gold-display');
+    if (!el) return;
     el.style.color = '#d94040';
     setTimeout(() => { el.style.color = ''; }, 300);
   }
@@ -227,9 +252,7 @@ export class BattleScene {
       this._manager.canvasWidth  = w;
       this._manager.canvasHeight = h;
     }
-    if (this._ui) {
-      this._ui.resize(w, h);
-    }
+    if (this._ui) this._ui.resize(w, h);
   }
 
   // ----------------------------------------------------------------
@@ -237,23 +260,24 @@ export class BattleScene {
   // ----------------------------------------------------------------
 
   _preloadImages(callback) {
-    const allDefs = [...ALLY_UNITS, ...ENEMY_UNITS];
+    const allDefs   = [...ALLY_UNITS, ...ENEMY_UNITS];
     const withImage = allDefs.filter(d => d.image !== null);
 
     if (withImage.length === 0) {
-      // 画像未設定のユニットのみの場合はそのまま開始
       callback();
       return;
     }
 
     let remaining = withImage.length;
     for (const def of withImage) {
-      const img = new Image();
-      img.src = getUnitImagePath(def);
-      img.onload = img.onerror = () => {
+      const img  = new Image();
+      img.src    = getUnitImagePath(def);
+      const done = () => {
         this._imageCache[def.id] = img;
         if (--remaining === 0) callback();
       };
+      img.onload  = done;
+      img.onerror = done;  // 画像が見つからなくても進行を止めない
     }
   }
 
@@ -263,7 +287,6 @@ export class BattleScene {
 
   _startBattle() {
     this._resizeCanvas();
-
     this._ui = new UIManager(this._canvasEl);
 
     this._manager = new BattleManager(
@@ -271,39 +294,35 @@ export class BattleScene {
       this._imageCache,
       this._canvasEl.width,
       this._canvasEl.height,
-      (gold)          => this._onGoldChange(gold),
-      (hp, maxHp)     => this._onFortressHpChange(hp, maxHp),
-      (waveIdx, total) => this._onWaveStart(waveIdx, total),
-      (result)        => this._onResult(result)
+      (gold)            => this._onGoldChange(gold),
+      (hp, maxHp)       => this._onFortressHpChange(hp, maxHp),
+      (waveIdx, total)  => this._onWaveStart(waveIdx, total),
+      (result)          => this._onResult(result)
     );
 
-    // 初期表示
+    // 初期表示を即時反映
     this._onGoldChange(this._manager.gold);
     this._onFortressHpChange(this._manager.fortressHp, this._manager.fortressMaxHp);
+
+    // 経過時間表示の更新タイマー
+    this._timeInterval = setInterval(() => this._updateTimeDisplay(), 500);
 
     this._manager.start();
   }
 
   // ----------------------------------------------------------------
-  //  コールバック
+  //  コールバック・表示更新
   // ----------------------------------------------------------------
 
   _onGoldChange(gold) {
     const el = document.getElementById('gold-display');
     if (el) el.textContent = gold;
 
-    // ゴールド不足カードをマーク
+    // コスト不足のカードをグレーアウト
     document.querySelectorAll('.unit-card').forEach(card => {
-      const id  = card.dataset.unitId;
-      const def = ALLY_UNITS.find(u => u.id === id);
-      if (def) {
-        card.classList.toggle('insufficient', gold < def.cost);
-      }
+      const def = ALLY_UNITS.find(u => u.id === card.dataset.unitId);
+      if (def) card.classList.toggle('insufficient', gold < def.cost);
     });
-  }
-
-  _updateGoldDisplay() {
-    if (this._manager) this._onGoldChange(this._manager.gold);
   }
 
   _onFortressHpChange(hp, maxHp) {
@@ -316,8 +335,8 @@ export class BattleScene {
     num.textContent  = `${hp} / ${maxHp}`;
 
     fill.className = 'fortress-hp-fill';
-    if (ratio <= 0.25) fill.classList.add('crit');
-    else if (ratio <= 0.5) fill.classList.add('low');
+    if (ratio <= 0.25)      fill.classList.add('crit');
+    else if (ratio <= 0.5)  fill.classList.add('low');
   }
 
   _onWaveStart(waveIdx, total) {
@@ -328,22 +347,35 @@ export class BattleScene {
     if (announce) {
       announce.textContent = `WAVE ${waveIdx + 1}`;
       announce.classList.add('show');
-      setTimeout(() => announce.classList.remove('show'), 2000);
+      setTimeout(() => announce.classList.remove('show'), 2200);
     }
   }
 
+  _updateTimeDisplay() {
+    if (!this._manager) return;
+    const sec   = Math.floor(this._manager.elapsed / 1000);
+    const m     = Math.floor(sec / 60);
+    const s     = String(sec % 60).padStart(2, '0');
+    const el    = document.getElementById('time-display');
+    if (el) el.textContent = `${m}:${s}`;
+  }
+
   _onResult(result) {
+    // タイマー停止
+    if (this._timeInterval) clearInterval(this._timeInterval);
+
     const overlay  = document.getElementById('result-overlay');
     const title    = document.getElementById('result-title');
     const subtitle = document.getElementById('result-subtitle');
+    if (!overlay) return;
 
     if (result === 'victory') {
-      title.textContent   = 'VICTORY';
-      title.className     = 'result-title victory';
+      title.textContent    = 'VICTORY';
+      title.className      = 'result-title victory';
       subtitle.textContent = 'コンドルの砦は守られた。';
     } else {
-      title.textContent   = 'DEFEAT';
-      title.className     = 'result-title defeat';
+      title.textContent    = 'DEFEAT';
+      title.className      = 'result-title defeat';
       subtitle.textContent = '砦は陥落した。再起を誓え。';
     }
 

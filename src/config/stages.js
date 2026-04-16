@@ -18,17 +18,15 @@ export const STAGES = [
     description: 'コンドル砦に向かう敵軍の先遣隊を退けよ。',
     fortressHp: 500,
     initialGold: 200,
-    goldPerSec: 8,        // 時間経過で増加するゴールド/秒
+    goldPerSec: 8,
     bgImage: null,        // TODO: 背景画像未確定
     waves: [
-      // wave 1: 開始15秒後
       {
         time: 15,
         enemies: [
           { unitId: 'grunt', count: 3, interval: 2000 }
         ]
       },
-      // wave 2: 開始35秒後
       {
         time: 35,
         enemies: [
@@ -36,7 +34,6 @@ export const STAGES = [
           { unitId: 'raider', count: 1, interval: 3000 }
         ]
       },
-      // wave 3 (最終): 開始60秒後
       {
         time: 60,
         enemies: [
@@ -68,22 +65,25 @@ export const STAGES = [
       {
         time: 30,
         enemies: [
-          { unitId: 'grunt',  count: 3, interval: 1800 },
-          { unitId: 'raider', count: 2, interval: 2500 }
+          { unitId: 'grunt',      count: 3, interval: 1800 },
+          { unitId: 'raider',     count: 2, interval: 2500 },
+          { unitId: 'rat_healer', count: 1, interval: 4000 }  // 回復役を初登場
         ]
       },
       {
         time: 50,
         enemies: [
-          { unitId: 'brute',  count: 2, interval: 3500 },
-          { unitId: 'raider', count: 2, interval: 2500 }
+          { unitId: 'brute',      count: 2, interval: 3500 },
+          { unitId: 'raider',     count: 2, interval: 2500 },
+          { unitId: 'rat_healer', count: 1, interval: 5000 }
         ]
       },
       {
         time: 75,
         enemies: [
-          { unitId: 'grunt',    count: 6, interval: 1500 },
-          { unitId: 'warlord',  count: 1, interval: 5000 }
+          { unitId: 'grunt',      count: 6, interval: 1500 },
+          { unitId: 'warlord',    count: 1, interval: 5000 },
+          { unitId: 'rat_healer', count: 2, interval: 3500 }
         ]
       }
     ]
@@ -95,7 +95,7 @@ export const STAGES = [
   {
     id: 'stage_03',
     name: 'ステージ 3 — 最終決戦',
-    description: 'ウォーロード率いる決死隊が砦に迫る。コンドルの名を守れ。',
+    description: 'カオスロード率いる決死隊が砦に迫る。コンドルの名を守れ。',
     fortressHp: 400,
     initialGold: 160,
     goldPerSec: 10,
@@ -104,29 +104,33 @@ export const STAGES = [
       {
         time: 10,
         enemies: [
-          { unitId: 'grunt',  count: 5, interval: 1600 }
+          { unitId: 'grunt',      count: 5, interval: 1600 },
+          { unitId: 'rat_healer', count: 1, interval: 3000 }
         ]
       },
       {
         time: 28,
         enemies: [
-          { unitId: 'brute',  count: 2, interval: 3000 },
-          { unitId: 'raider', count: 3, interval: 2000 }
+          { unitId: 'brute',      count: 2, interval: 3000 },
+          { unitId: 'raider',     count: 3, interval: 2000 },
+          { unitId: 'rat_healer', count: 1, interval: 4000 }
         ]
       },
       {
         time: 48,
         enemies: [
-          { unitId: 'beast',   count: 3, interval: 2000 },
-          { unitId: 'raider',  count: 2, interval: 2200 }
+          { unitId: 'beast',      count: 3, interval: 2000 },
+          { unitId: 'raider',     count: 2, interval: 2200 },
+          { unitId: 'rat_healer', count: 2, interval: 3000 }
         ]
       },
       {
         time: 68,
         enemies: [
-          { unitId: 'grunt',   count: 8, interval: 1200 },
-          { unitId: 'warlord', count: 2, interval: 4000 },
-          { unitId: 'beast',   count: 2, interval: 2500 }
+          { unitId: 'grunt',      count: 8, interval: 1200 },
+          { unitId: 'warlord',    count: 2, interval: 4000 },
+          { unitId: 'beast',      count: 2, interval: 2500 },
+          { unitId: 'rat_healer', count: 2, interval: 3500 }
         ]
       }
     ]
