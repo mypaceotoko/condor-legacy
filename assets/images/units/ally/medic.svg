@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="68" height="80" viewBox="0 0 68 80">
+<defs>
+  <radialGradient id="fr" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#60c060"/><stop offset="100%" stop-color="#204820"/></radialGradient>
+  <linearGradient id="rb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a2e1a"/><stop offset="100%" stop-color="#080e08"/></linearGradient>
+  <radialGradient id="orb" cx="30%" cy="30%" r="65%"><stop offset="0%" stop-color="#80ffb0"/><stop offset="60%" stop-color="#00c060"/><stop offset="100%" stop-color="#004020"/></radialGradient>
+</defs>
+<ellipse cx="32" cy="78" rx="14" ry="3" fill="rgba(0,0,0,0.3)"/>
+<rect x="22" y="58" width="10" height="20" rx="2" fill="url(#rb)"/>
+<rect x="34" y="58" width="10" height="20" rx="2" fill="url(#rb)"/>
+<rect x="20" y="71" width="14" height="8" rx="2" fill="#304830"/>
+<rect x="34" y="71" width="14" height="8" rx="2" fill="#304830"/>
+<path d="M14 28 L54 28 L52 62 L16 62Z" fill="url(#rb)"/>
+<path d="M14 28 L18 62" stroke="#2a4a2a" stroke-width="0.8" opacity="0.5"/>
+<path d="M54 28 L50 62" stroke="#2a4a2a" stroke-width="0.8" opacity="0.5"/>
+<rect x="46" y="32" width="6" height="20" rx="2" fill="url(#rb)"/>
+<circle cx="56" cy="28" r="10" fill="url(#orb)"/>
+<circle cx="56" cy="28" r="6" fill="#40ff90" opacity="0.7"/>
+<rect x="53" y="24" width="6" height="8" rx="1" fill="#ffffff" opacity="0.5"/>
+<rect x="51" y="26" width="10" height="4" rx="1" fill="#ffffff" opacity="0.5"/>
+<ellipse cx="32" cy="16" rx="14" ry="14" fill="url(#fr)"/>
+<ellipse cx="32" cy="15" rx="11" ry="9" fill="#50b050"/>
+<ellipse cx="22" cy="8" rx="8" ry="8" fill="url(#fr)"/>
+<ellipse cx="22" cy="8" rx="5" ry="5" fill="#70d070"/>
+<circle cx="22" cy="8" r="3" fill="#101808"/>
+<circle cx="21" cy="7" r="1.2" fill="#ffffff" opacity="0.8"/>
+<ellipse cx="42" cy="8" rx="8" ry="8" fill="url(#fr)"/>
+<ellipse cx="42" cy="8" rx="5" ry="5" fill="#70d070"/>
+<circle cx="42" cy="8" r="3" fill="#101808"/>
+<circle cx="41" cy="7" r="1.2" fill="#ffffff" opacity="0.8"/>
+<path d="M24 24 Q32 28 40 24" fill="url(#fr)" stroke="none"/>
+<path d="M18 2 L18 12" stroke="#204820" stroke-width="2" opacity="0.4"/>
+<path d="M46 2 L46 12" stroke="#204820" stroke-width="2" opacity="0.4"/>
+<rect x="16" y="1" width="6" height="8" rx="2" fill="#1a3018"/>
+<rect x="42" y="1" width="6" height="8" rx="2" fill="#1a3018"/>
+</svg>

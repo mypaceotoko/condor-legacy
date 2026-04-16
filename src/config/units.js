@@ -28,7 +28,7 @@ export const ALLY_UNITS = [
     moveSpeed: 42,       // 移動速度 (px/sec)
     attackInterval: 1200, // 攻撃間隔 (ms)
     cost: 80,
-    image: 'vanguard.png'
+    image: 'vanguard.svg'
   },
   {
     id: 'sharpshooter',
@@ -42,7 +42,7 @@ export const ALLY_UNITS = [
     moveSpeed: 36,
     attackInterval: 1800,
     cost: 100,
-    image: 'sharpshooter.png'
+    image: 'sharpshooter.svg'
   },
   {
     id: 'iron_guard',
@@ -56,7 +56,7 @@ export const ALLY_UNITS = [
     moveSpeed: 25,
     attackInterval: 1500,
     cost: 120,
-    image: 'iron_guard.png'
+    image: 'iron_guard.svg'
   },
   {
     id: 'pyromancer',
@@ -70,7 +70,7 @@ export const ALLY_UNITS = [
     moveSpeed: 30,
     attackInterval: 2200,
     cost: 140,
-    image: 'pyromancer.png'
+    image: 'pyromancer.svg'
   },
   {
     id: 'medic',
@@ -86,7 +86,7 @@ export const ALLY_UNITS = [
     cost: 90,
     healAmount: 15,
     healInterval: 2500,
-    image: 'medic.png'
+    image: 'medic.svg'
   },
   {
     id: 'golden_bird',
@@ -100,7 +100,7 @@ export const ALLY_UNITS = [
     moveSpeed: 95,       // 最速クラス
     attackInterval: 900,
     cost: 110,
-    image: 'golden_bird.png'
+    image: 'golden_bird.svg'
   }
 ];
 
@@ -121,7 +121,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 38,
     attackInterval: 1400,
     reward: 20,
-    image: 'grunt.png'
+    image: 'grunt.svg'
   },
   {
     id: 'brute',
@@ -135,7 +135,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 22,
     attackInterval: 1600,
     reward: 50,
-    image: 'brute.png'
+    image: 'brute.svg'
   },
   {
     id: 'raider',
@@ -149,7 +149,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 34,
     attackInterval: 1900,
     reward: 40,
-    image: 'raider.png'
+    image: 'raider.svg'
   },
   {
     id: 'warlord',
@@ -163,7 +163,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 28,
     attackInterval: 1300,
     reward: 100,
-    image: 'warlord.png'
+    image: 'warlord.svg'
   },
   {
     id: 'beast',
@@ -177,7 +177,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 60,
     attackInterval: 1000,
     reward: 70,
-    image: 'beast.png'
+    image: 'beast.svg'
   },
   {
     id: 'rat_healer',
@@ -193,7 +193,7 @@ export const ENEMY_UNITS = [
     reward: 60,
     healAmount: 20,      // 回復量
     healInterval: 3000,  // 回復間隔 (ms)
-    image: 'rat_healer.png'
+    image: 'rat_healer.svg'
   }
 ];
 

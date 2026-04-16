@@ -87,17 +87,22 @@
 
 .stage-select-title {
   font-family: var(--font-title);
-  font-size: 28px;
+  font-size: clamp(18px, 4vw, 28px);
   letter-spacing: 0.2em;
   color: var(--color-gold);
   margin-bottom: 40px;
+  text-align: center;
+  padding: 0 16px;
 }
 
 .stage-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 480px;
+  width: 100%;
+  max-width: 480px;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .stage-card {
