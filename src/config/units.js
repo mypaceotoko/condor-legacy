@@ -178,6 +178,22 @@ export const ENEMY_UNITS = [
     attackInterval: 1000,
     reward: 70,
     image: 'beast.png'
+  },
+  {
+    id: 'rat_healer',
+    name: 'ラタン',
+    side: 'enemy',
+    description: 'マントをまとったネズミの回復術士。チーズの魔力で周囲の敵を回復する厄介な存在。',
+    hp: 100,
+    attack: 8,
+    defense: 8,
+    range: 90,
+    moveSpeed: 32,
+    attackInterval: 2500,
+    reward: 60,
+    healAmount: 20,      // 回復量
+    healInterval: 3000,  // 回復間隔 (ms)
+    image: 'rat_healer.png'
   }
 ];
 
