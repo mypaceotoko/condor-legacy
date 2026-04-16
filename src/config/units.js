@@ -167,9 +167,9 @@ export const ENEMY_UNITS = [
   },
   {
     id: 'beast',
-    name: 'ビースト',
+    name: 'デスストーカー',
     side: 'enemy',
-    description: '制御された魔獣。素早く攻撃力が高い危険な存在。',
+    description: '骸骨の頭を持つアンデッドの多脚魔獣。移動が速く攻撃力も高い、最も危険な存在。',
     hp: 150,
     attack: 42,
     defense: 10,
@@ -177,8 +177,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 60,
     attackInterval: 1000,
     reward: 70,
-    // TODO: 画像未確定
-    image: null
+    image: 'beast.png'
   }
 ];
 
