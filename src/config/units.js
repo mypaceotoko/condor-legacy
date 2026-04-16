@@ -125,9 +125,9 @@ export const ENEMY_UNITS = [
   },
   {
     id: 'brute',
-    name: 'ブルート',
+    name: 'ナイトメア',
     side: 'enemy',
-    description: '重装甲の強敵。HPが高く突破されると厄介。',
+    description: '脳が露出した多腕のホラークリーチャー。HPが非常に高く、爪で前線を突き崩す。',
     hp: 200,
     attack: 24,
     defense: 18,
@@ -135,8 +135,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 22,
     attackInterval: 1600,
     reward: 50,
-    // TODO: 画像未確定
-    image: null
+    image: 'brute.png'
   },
   {
     id: 'raider',
