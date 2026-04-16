@@ -153,9 +153,9 @@ export const ENEMY_UNITS = [
   },
   {
     id: 'warlord',
-    name: 'ウォーロード',
+    name: 'カオスロード',
     side: 'enemy',
-    description: '精鋭の敵指揮官。全ステータスが高い強敵。',
+    description: '4本の魔剣を操る暗黒の指揮官。全ステータスが最高クラスで、単騎で前線を壊滅させる。',
     hp: 300,
     attack: 35,
     defense: 20,
@@ -163,8 +163,7 @@ export const ENEMY_UNITS = [
     moveSpeed: 28,
     attackInterval: 1300,
     reward: 100,
-    // TODO: 画像未確定
-    image: null
+    image: 'warlord.png'
   },
   {
     id: 'beast',
