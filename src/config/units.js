@@ -142,7 +142,7 @@ export const ALLY_UNITS = [
     moveSpeed: 0,
     attackInterval: 2500,
     cost: 100,
-    image: null            // 画像未確定
+    image: 'rock_dropper.svg'
   },
   {
     id: 'triple_rock',
