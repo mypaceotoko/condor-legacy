@@ -125,7 +125,7 @@ export const ALLY_UNITS = [
     cost: 80,
     mineDamage: 80,        // 地雷爆発ダメージ
     mineRadius: 40,        // 爆発検知半径 (px)
-    image: null            // 画像未確定
+    image: 'worker.svg'
   },
 
   // ── Fixed Weapons ────────────────────────────────────────────────
