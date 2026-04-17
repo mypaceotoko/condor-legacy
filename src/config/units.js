@@ -172,7 +172,7 @@ export const ALLY_UNITS = [
     moveSpeed: 0,
     attackInterval: 4500,
     cost: 180,
-    image: null            // 画像未確定
+    image: 'catapult.svg'
   }
 ];
 
