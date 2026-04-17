@@ -31,10 +31,13 @@ export class Unit {
     this.range          = def.range;
     this.moveSpeed      = def.moveSpeed;
     this.attackInterval = def.attackInterval;
-    this.cost           = def.cost        ?? 0;
-    this.reward         = def.reward      ?? 0;
-    this.healAmount     = def.healAmount  ?? 0;
+    this.cost           = def.cost         ?? 0;
+    this.reward         = def.reward       ?? 0;
+    this.healAmount     = def.healAmount   ?? 0;
     this.healInterval   = def.healInterval ?? 0;
+    this.type           = def.type         ?? 'normal';
+    this.mineDamage     = def.mineDamage   ?? 0;
+    this.mineRadius     = def.mineRadius   ?? 40;
 
     // 動的状態
     this.hp    = def.hp;
@@ -65,6 +68,13 @@ export class Unit {
      * @type {((targetX: number, targetY: number, amount: number) => void) | null}
      */
     this.onHealDealt = null;
+
+    /**
+     * ワーカーが地雷を設置したときに呼ばれるコールバック。
+     * BattleManager がセットする。
+     * @type {((x: number, y: number) => void) | null}
+     */
+    this.onMineDeploy = null;
   }
 
   // ----------------------------------------------------------------
@@ -101,8 +111,35 @@ export class Unit {
       }
     }
 
+    // ── 固定兵器: 移動しない、射程内の敵だけ攻撃 ──────────────
+    if (this.type === 'fixedWeapon') {
+      if (this.target && this._distanceTo(this.target) <= this.range) {
+        this.state = UnitState.ATTACKING;
+        this._attackTimer += dt;
+        if (this._attackTimer >= this.attackInterval) {
+          this._attackTimer = 0;
+          this._dealDamage(this.target);
+        }
+      } else {
+        this.state = UnitState.IDLE;
+      }
+      return;
+    }
+
+    // ── ワーカー: 前進しながら地雷を設置 ──────────────────────
+    if (this.type === 'worker') {
+      this._attackTimer += dt;
+      if (this._attackTimer >= this.attackInterval) {
+        this._attackTimer = 0;
+        if (this.onMineDeploy) this.onMineDeploy(this.x, this.y);
+      }
+      this._advance(dt);
+      this.state = UnitState.MOVING;
+      return;
+    }
+
+    // ── 通常ユニット ────────────────────────────────────────────
     if (!this.target) {
-      // ターゲットなし → 方向へ前進
       this._advance(dt);
       this.state = UnitState.MOVING;
       return;
@@ -111,7 +148,6 @@ export class Unit {
     const dist = this._distanceTo(this.target);
 
     if (dist <= this.range) {
-      // 射程内 → 攻撃
       this.state = UnitState.ATTACKING;
       this._attackTimer += dt;
       if (this._attackTimer >= this.attackInterval) {
@@ -119,7 +155,6 @@ export class Unit {
         this._dealDamage(this.target);
       }
     } else {
-      // 射程外 → ターゲットへ移動
       this.state = UnitState.MOVING;
       this._moveToward(this.target, dt);
     }

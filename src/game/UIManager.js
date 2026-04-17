@@ -42,7 +42,7 @@ export class UIManager {
    * @param {number} dt - 経過時間 (ms)
    * @param {boolean} showDeployZone - 配置ゾーンをハイライトするか
    */
-  draw(allyUnits, enemyUnits, dt, showDeployZone = false) {
+  draw(allyUnits, enemyUnits, dt, showDeployZone = false, mines = []) {
     const ctx = this.ctx;
     const W   = this.canvas.width;
     const H   = this.canvas.height;
@@ -57,6 +57,7 @@ export class UIManager {
     }
 
     this._drawFortressLine(H);
+    this._drawMines(mines);
 
     // 敵 → 味方の順で描画（味方が前面に来る）
     for (const u of enemyUnits)  this._drawUnit(u);
@@ -64,6 +65,32 @@ export class UIManager {
 
     this._updateEffects(dt);
     this._drawEffects();
+  }
+
+  // ----------------------------------------------------------------
+  //  地雷描画
+  // ----------------------------------------------------------------
+
+  _drawMines(mines) {
+    const ctx = this.ctx;
+    for (const mine of mines) {
+      if (!mine.active) continue;
+      // 地雷本体（黒い円）
+      ctx.fillStyle = '#1a1208';
+      ctx.beginPath();
+      ctx.arc(mine.x, mine.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      // オレンジ枠
+      ctx.strokeStyle = '#ff8800';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // 警告マーク「!」
+      ctx.fillStyle = '#ff8800';
+      ctx.font = 'bold 8px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText('!', mine.x, mine.y + 3);
+      ctx.textAlign = 'left';
+    }
   }
 
   /**

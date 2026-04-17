@@ -59,6 +59,12 @@ export class BattleManager {
      * @type {{ x: number, y: number, text: string, color: string }[]}
      */
     this.floatEvents = [];
+
+    /**
+     * 地雷オブジェクト配列。ワーカーが設置し、敵が踏むと爆発する。
+     * @type {{ x: number, y: number, damage: number, radius: number, active: boolean }[]}
+     */
+    this.mines = [];
   }
 
   // ----------------------------------------------------------------
@@ -92,6 +98,7 @@ export class BattleManager {
     this._checkWaves();
     this._processSpawnQueues(dt);
     this._updateUnits(dt);
+    this._updateMines();
     this._cleanDeadUnits();
     this._checkResult();
   }
@@ -147,6 +154,19 @@ export class BattleManager {
       this.floatEvents.push({ x: tx, y: ty - 16, text: `+${amount}`, color: '#60ff90' });
     };
 
+    // ワーカー: 地雷設置コールバック
+    if (def.type === 'worker') {
+      unit.onMineDeploy = (x, y) => {
+        this.mines.push({
+          x, y,
+          damage: def.mineDamage ?? 80,
+          radius: def.mineRadius ?? 40,
+          active: true
+        });
+        this.floatEvents.push({ x, y: y - 20, text: 'SET', color: '#ffaa00' });
+      };
+    }
+
     return unit;
   }
 
@@ -194,6 +214,25 @@ export class BattleManager {
   }
 
   // --- ユニット更新 ---
+
+  _updateMines() {
+    for (const mine of this.mines) {
+      if (!mine.active) continue;
+      for (const enemy of this.enemyUnits) {
+        if (!enemy.isAlive) continue;
+        const dx = enemy.x - mine.x;
+        const dy = enemy.y - mine.y;
+        if (Math.sqrt(dx * dx + dy * dy) <= mine.radius) {
+          mine.active = false;
+          const dmg = enemy.takeDamage(mine.damage);
+          this.floatEvents.push({ x: mine.x, y: mine.y - 20, text: 'BOOM!', color: '#ff8800' });
+          this.floatEvents.push({ x: enemy.x, y: enemy.y - 16, text: `-${dmg}`, color: '#ff6060' });
+          break;
+        }
+      }
+    }
+    this.mines = this.mines.filter(m => m.active);
+  }
 
   _updateUnits(dt) {
     for (const unit of this.allyUnits) {

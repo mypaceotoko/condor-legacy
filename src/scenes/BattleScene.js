@@ -45,7 +45,8 @@ export class BattleScene {
       this._manager.allyUnits,
       this._manager.enemyUnits,
       dt * this._speedMult,
-      showZone
+      showZone,
+      this._manager.mines
     );
 
     // BattleManager が蓄積したフロートイベントを UIManager に渡す

@@ -20,6 +20,7 @@ export const ALLY_UNITS = [
     id: 'vanguard',
     name: 'ヴァンガード',
     side: 'ally',
+    type: 'normal',
     description: '近接戦闘を得意とする主力歩兵。バランス型。',
     hp: 120,
     attack: 22,
@@ -33,6 +34,7 @@ export const ALLY_UNITS = [
   {
     id: 'sharpshooter',
     name: 'アリア',
+    type: 'normal',
     side: 'ally',
     description: 'クロスボウを操る俊足の射手。遠距離から正確に敵を狙い撃つ。',
     hp: 80,
@@ -47,6 +49,7 @@ export const ALLY_UNITS = [
   {
     id: 'iron_guard',
     name: 'スチームゴーレム',
+    type: 'normal',
     side: 'ally',
     description: '蒸気機関で動く重装甲ゴーレム。HPと防御が群を抜いて高く、前線の壁となる。',
     hp: 220,
@@ -61,6 +64,7 @@ export const ALLY_UNITS = [
   {
     id: 'pyromancer',
     name: 'グリム',
+    type: 'normal',
     side: 'ally',
     description: '死霊術を操る暗黒魔道士。攻撃力が最高クラスで、遠距離から敵を薙ぎ払う。',
     hp: 70,
@@ -75,6 +79,7 @@ export const ALLY_UNITS = [
   {
     id: 'medic',
     name: 'ケロ',
+    type: 'normal',
     side: 'ally',
     description: '黒マントをまとったカエルの回復魔道士。緑のオーブで味方のHPを癒す。',
     hp: 75,
@@ -91,16 +96,83 @@ export const ALLY_UNITS = [
   {
     id: 'golden_bird',
     name: 'ゴールデンバード',
+    type: 'normal',
     side: 'ally',
     description: '黄金の快速鳥。移動速度が群を抜いて速く、敵陣を素早く切り崩す。',
     hp: 90,
     attack: 18,
     defense: 5,
     range: 55,
-    moveSpeed: 95,       // 最速クラス
+    moveSpeed: 95,
     attackInterval: 900,
     cost: 110,
     image: 'golden_bird.svg'
+  },
+
+  // ── Worker ──────────────────────────────────────────────────────
+  {
+    id: 'worker',
+    name: 'ワーカー',
+    type: 'worker',
+    side: 'ally',
+    description: '前線を歩きながら地雷を設置する工兵。踏んだ敵を爆発で吹き飛ばす。',
+    hp: 60,
+    attack: 6,
+    defense: 3,
+    range: 50,
+    moveSpeed: 34,
+    attackInterval: 4000,  // 地雷設置間隔 (ms)
+    cost: 80,
+    mineDamage: 80,        // 地雷爆発ダメージ
+    mineRadius: 40,        // 爆発検知半径 (px)
+    image: null            // 画像未確定
+  },
+
+  // ── Fixed Weapons ────────────────────────────────────────────────
+  {
+    id: 'rock_dropper',
+    name: '岩落機',
+    type: 'fixedWeapon',
+    side: 'ally',
+    description: '設置型の岩落とし装置。射程内の敵に岩を落として中ダメージを与える。',
+    hp: 150,
+    attack: 35,
+    defense: 10,
+    range: 120,
+    moveSpeed: 0,
+    attackInterval: 2500,
+    cost: 100,
+    image: null            // 画像未確定
+  },
+  {
+    id: 'triple_rock',
+    name: '三連岩落機',
+    type: 'fixedWeapon',
+    side: 'ally',
+    description: '3つの岩を連続で落とす強化版岩落機。攻撃速度が高く、複数の敵を素早く削る。',
+    hp: 120,
+    attack: 22,
+    defense: 8,
+    range: 140,
+    moveSpeed: 0,
+    attackInterval: 900,
+    cost: 150,
+    image: null            // 画像未確定
+  },
+  {
+    id: 'catapult',
+    name: '投石機',
+    type: 'fixedWeapon',
+    side: 'ally',
+    description: '大型の投石機。射程が最長で攻撃力も最高だが、リロードに時間がかかる。',
+    hp: 100,
+    attack: 65,
+    defense: 5,
+    range: 220,
+    moveSpeed: 0,
+    attackInterval: 4500,
+    cost: 180,
+    image: null            // 画像未確定
   }
 ];
 
