@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="68" height="80" viewBox="0 0 68 80">
+<defs>
+  <linearGradient id="wd" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#8a5e2a"/>
+    <stop offset="100%" stop-color="#5a3810"/>
+  </linearGradient>
+  <linearGradient id="mt" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#7a7a8a"/>
+    <stop offset="100%" stop-color="#3a3a4a"/>
+  </linearGradient>
+  <radialGradient id="rk" cx="35%" cy="30%" r="65%">
+    <stop offset="0%" stop-color="#a8a8a8"/>
+    <stop offset="100%" stop-color="#585858"/>
+  </radialGradient>
+</defs>
+
+<!-- Ground shadow -->
+<ellipse cx="34" cy="78" rx="30" ry="3" fill="rgba(0,0,0,0.35)"/>
+
+<!-- Wide wooden base platform -->
+<rect x="2" y="66" width="64" height="11" rx="2" fill="url(#wd)"/>
+<line x1="10" y1="66" x2="10" y2="77" stroke="#3a2208" stroke-width="0.8" opacity="0.45"/>
+<line x1="22" y1="66" x2="22" y2="77" stroke="#3a2208" stroke-width="0.8" opacity="0.45"/>
+<line x1="34" y1="66" x2="34" y2="77" stroke="#3a2208" stroke-width="0.8" opacity="0.45"/>
+<line x1="46" y1="66" x2="46" y2="77" stroke="#3a2208" stroke-width="0.8" opacity="0.45"/>
+<line x1="58" y1="66" x2="58" y2="77" stroke="#3a2208" stroke-width="0.8" opacity="0.45"/>
+<!-- Metal straps on platform -->
+<rect x="2" y="66" width="64" height="3" rx="1" fill="url(#mt)" opacity="0.55"/>
+<rect x="2" y="74" width="64" height="3" rx="1" fill="url(#mt)" opacity="0.45"/>
+
+<!-- ── Arm LEFT ─────────────────────────────────────────── -->
+<!-- Left A-frame support -->
+<line x1="10" y1="66" x2="16" y2="42" stroke="#7a5028" stroke-width="4" stroke-linecap="round"/>
+<line x1="22" y1="66" x2="16" y2="42" stroke="#7a5028" stroke-width="4" stroke-linecap="round"/>
+<!-- Left pivot hub -->
+<circle cx="16" cy="42" r="4" fill="url(#mt)"/>
+<circle cx="16" cy="42" r="2" fill="#3a3a4a"/>
+<!-- Left arm (angled up-right) -->
+<line x1="16" y1="42" x2="34" y2="18" stroke="#9a6828" stroke-width="3" stroke-linecap="round"/>
+<!-- Left counterweight arm -->
+<line x1="16" y1="42" x2="8" y2="50" stroke="#8a5820" stroke-width="3" stroke-linecap="round"/>
+<!-- Left rock at tip -->
+<circle cx="34" cy="17" r="4" fill="url(#rk)"/>
+<circle cx="32" cy="15" r="2.5" fill="#909090"/>
+<!-- Left rope -->
+<path d="M34 17 Q28 28 18 36" fill="none" stroke="#c8a840" stroke-width="1" opacity="0.8"/>
+
+<!-- ── Arm CENTER ───────────────────────────────────────── -->
+<!-- Center A-frame support -->
+<line x1="28" y1="66" x2="34" y2="38" stroke="#7a5028" stroke-width="4" stroke-linecap="round"/>
+<line x1="40" y1="66" x2="34" y2="38" stroke="#7a5028" stroke-width="4" stroke-linecap="round"/>
+<!-- Center cross brace -->
+<line x1="28" y1="56" x2="40" y2="56" stroke="#6a4818" stroke-width="3" stroke-linecap="round"/>
+<!-- Center pivot hub -->
+<circle cx="34" cy="38" r="5" fill="url(#mt)"/>
+<circle cx="34" cy="38" r="2.5" fill="#3a3a4a"/>
+<!-- Center arm (tallest, straight up) -->
+<line x1="34" y1="38" x2="42" y2="10" stroke="#9a6828" stroke-width="3.5" stroke-linecap="round"/>
+<!-- Center counterweight arm -->
+<line x1="34" y1="38" x2="26" y2="48" stroke="#8a5820" stroke-width="3" stroke-linecap="round"/>
+<!-- Center rocks (2 rocks in cup) -->
+<ellipse cx="44" cy="9" rx="5" ry="3.5" fill="#787878"/>
+<circle cx="42" cy="8" r="3" fill="url(#rk)"/>
+<circle cx="46" cy="7" r="2.5" fill="#909090"/>
+<!-- Center rope -->
+<path d="M43 10 Q40 22 36 32" fill="none" stroke="#c8a840" stroke-width="1.2" opacity="0.85"/>
+
+<!-- ── Arm RIGHT ────────────────────────────────────────── -->
+<!-- Right A-frame support -->
+<line x1="46" y1="66" x2="52" y2="44" stroke="#7a5028" stroke-width="4" stroke-linecap="round"/>
+<line x1="58" y1="66" x2="52" y2="44" stroke="#7a5028" stroke-width="4" stroke-linecap="round"/>
+<!-- Right pivot hub -->
+<circle cx="52" cy="44" r="4" fill="url(#mt)"/>
+<circle cx="52" cy="44" r="2" fill="#3a3a4a"/>
+<!-- Right arm (angled up-right) -->
+<line x1="52" y1="44" x2="62" y2="22" stroke="#9a6828" stroke-width="3" stroke-linecap="round"/>
+<!-- Right counterweight arm -->
+<line x1="52" y1="44" x2="44" y2="52" stroke="#8a5820" stroke-width="3" stroke-linecap="round"/>
+<!-- Right rock -->
+<circle cx="63" cy="21" r="3.5" fill="url(#rk)"/>
+<!-- Right rope -->
+<path d="M62 22 Q58 32 54 38" fill="none" stroke="#c8a840" stroke-width="1" opacity="0.75"/>
+
+<!-- Metal reinforcement bars connecting the three units -->
+<rect x="10" y="60" width="48" height="4" rx="1" fill="url(#mt)" opacity="0.6"/>
+
+<!-- Ammo rocks (left ground) -->
+<ellipse cx="6" cy="64" rx="4" ry="3" fill="url(#rk)"/>
+<ellipse cx="12" cy="63" rx="3" ry="2.5" fill="#888"/>
+
+<!-- Sandbag right -->
+<ellipse cx="62" cy="65" rx="5" ry="4" fill="#c0a060"/>
+</svg>
