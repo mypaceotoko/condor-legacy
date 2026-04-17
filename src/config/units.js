@@ -134,7 +134,7 @@ export const ALLY_UNITS = [
     name: '岩落機',
     type: 'fixedWeapon',
     side: 'ally',
-    description: '設置型の岩落とし装置。射程内の敵に岩を落として中ダメージを与える。',
+    description: '設置型の標準砲台。低コストで置きやすく、射程内の敵に岩を落として安定したダメージを与える。',
     hp: 150,
     attack: 35,
     defense: 10,
@@ -149,13 +149,15 @@ export const ALLY_UNITS = [
     name: '三連岩落機',
     type: 'fixedWeapon',
     side: 'ally',
-    description: '3つの岩を連続で落とす強化版岩落機。攻撃速度が高く、複数の敵を素早く削る。',
+    description: '3連装の強化砲台。1サイクルで3発を連続発射し、総火力と手数で敵を圧倒する。',
     hp: 120,
-    attack: 22,
+    attack: 18,
     defense: 8,
     range: 140,
     moveSpeed: 0,
-    attackInterval: 900,
+    attackInterval: 2200, // バースト開始間隔 (ms)
+    burstCount: 3,        // 1サイクルで3発発射
+    burstDelay: 180,      // 連射間隔 (ms)
     cost: 150,
     image: 'triple_rock.svg'
   },
@@ -164,7 +166,7 @@ export const ALLY_UNITS = [
     name: '投石機',
     type: 'fixedWeapon',
     side: 'ally',
-    description: '大型の投石機。射程が最長で攻撃力も最高だが、リロードに時間がかかる。',
+    description: '最長射程を誇る大型砲台。単発火力が群を抜いて高いが、リロードに時間がかかる。',
     hp: 100,
     attack: 65,
     defense: 5,

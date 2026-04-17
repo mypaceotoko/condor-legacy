@@ -38,6 +38,8 @@ export class Unit {
     this.type           = def.type         ?? 'normal';
     this.mineDamage     = def.mineDamage   ?? 0;
     this.mineRadius     = def.mineRadius   ?? 40;
+    this.burstCount     = def.burstCount   ?? 1;   // 1回の攻撃サイクルで発射する弾数
+    this.burstDelay     = def.burstDelay   ?? 150; // バースト内の連射間隔 (ms)
 
     // 動的状態
     this.hp    = def.hp;
@@ -47,8 +49,10 @@ export class Unit {
     this.image = image;
 
     // タイマー
-    this._attackTimer = 0;
-    this._healTimer   = 0;
+    this._attackTimer    = 0;
+    this._healTimer      = 0;
+    this._burstRemaining = 0; // バースト中の残弾数
+    this._burstTimer     = 0; // バースト内の次弾までのタイマー
 
     // ターゲット
     this.target = null;
@@ -115,13 +119,28 @@ export class Unit {
     if (this.type === 'fixedWeapon') {
       if (this.target && this._distanceTo(this.target) <= this.range) {
         this.state = UnitState.ATTACKING;
-        this._attackTimer += dt;
-        if (this._attackTimer >= this.attackInterval) {
-          this._attackTimer = 0;
-          this._dealDamage(this.target);
+
+        // バースト中: 次弾の発射タイミングを待つ
+        if (this._burstRemaining > 0) {
+          this._burstTimer += dt;
+          if (this._burstTimer >= this.burstDelay) {
+            this._burstTimer = 0;
+            this._burstRemaining--;
+            if (this.target?.isAlive) this._dealDamage(this.target);
+          }
+        } else {
+          // 通常サイクル: attackInterval ごとにバースト開始
+          this._attackTimer += dt;
+          if (this._attackTimer >= this.attackInterval) {
+            this._attackTimer    = 0;
+            this._burstRemaining = this.burstCount - 1; // 1発目はここで撃つ
+            this._burstTimer     = 0;
+            this._dealDamage(this.target);
+          }
         }
       } else {
-        this.state = UnitState.IDLE;
+        this.state           = UnitState.IDLE;
+        this._burstRemaining = 0; // ターゲットを失ったらバーストリセット
       }
       return;
     }
