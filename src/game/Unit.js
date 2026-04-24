@@ -38,6 +38,9 @@ export class Unit {
     this.type           = def.type         ?? 'normal';
     this.mineDamage     = def.mineDamage   ?? 0;
     this.mineRadius     = def.mineRadius   ?? 40;
+    this.tacticalMode         = 'free';  // 'free'|'hold'|'move'|'attack'
+    this.moveTarget           = null;    // {x,y} — 'move' モードの移動先
+    this.tacticalAttackTarget = null;    // Unit  — 'attack' モードの強制ターゲット
     this.burstCount     = def.burstCount   ?? 1;   // 1回の攻撃サイクルで発射する弾数
     this.burstDelay     = def.burstDelay   ?? 150; // バースト内の連射間隔 (ms)
 
@@ -101,6 +104,15 @@ export class Unit {
       this.target = null;
     }
 
+    // 戦術モード: 強制攻撃ターゲットの管理
+    if (this.tacticalAttackTarget && !this.tacticalAttackTarget.isAlive) {
+      this.tacticalAttackTarget = null;
+      if (this.tacticalMode === 'attack') this.tacticalMode = 'hold';
+    }
+    if (this.tacticalMode === 'attack' && this.tacticalAttackTarget?.isAlive) {
+      this.target = this.tacticalAttackTarget;
+    }
+
     // 最寄りの相手を探す
     if (!this.target) {
       this.target = this._findNearestOpponent(opponents);
@@ -159,6 +171,10 @@ export class Unit {
 
     // ── 通常ユニット ────────────────────────────────────────────
     if (!this.target) {
+      if (this.tacticalMode === 'hold') {
+        this.state = UnitState.IDLE;
+        return;
+      }
       this._advance(dt);
       this.state = UnitState.MOVING;
       return;
@@ -175,7 +191,13 @@ export class Unit {
       }
     } else {
       this.state = UnitState.MOVING;
-      this._moveToward(this.target, dt);
+      if (this.tacticalMode === 'hold') {
+        this.target = null; // 射程外なら諦めて次フレームで再探索
+      } else if (this.tacticalMode === 'move') {
+        this._advance(dt);  // 移動先へ向かいつつ
+      } else {
+        this._moveToward(this.target, dt);
+      }
     }
   }
 
@@ -242,9 +264,23 @@ export class Unit {
   /**
    * ターゲットがいないときの前進。
    * 味方は右(+x)、敵は左(-x)へ進む。
-   * 画面外への到達判定は BattleManager が担当する。
+   * 戦術モード 'move' のときは moveTarget へ向かう。
    */
   _advance(dt) {
+    if (this.tacticalMode === 'move' && this.moveTarget) {
+      const dx   = this.moveTarget.x - this.x;
+      const dy   = this.moveTarget.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 5) {
+        this.moveTarget   = null;
+        this.tacticalMode = 'hold';
+        return;
+      }
+      const speed = (this.moveSpeed * dt) / 1000;
+      this.x += (dx / dist) * speed;
+      this.y += (dy / dist) * speed;
+      return;
+    }
     const dir   = this.side === 'ally' ? 1 : -1;
     const speed = (this.moveSpeed * dt) / 1000;
     this.x += dir * speed;
